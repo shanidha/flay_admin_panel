@@ -1,6 +1,11 @@
 import 'package:flay_admin_panel/controller/dashboard_controller.dart';
+import 'package:flay_admin_panel/view/category_screen.dart';
+import 'package:flay_admin_panel/view/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+
+import 'product_screen.dart';
 
 class Dashboard extends StatelessWidget {
   final DashboardController controller = Get.find();
@@ -9,7 +14,7 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF9F7F7),
-      body: Row(children: [
+      body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Obx(
           () => AnimatedContainer(
             width: controller.sidebarOpen.value ? 200 : 100,
@@ -18,22 +23,39 @@ class Dashboard extends StatelessWidget {
             child: _buildSideBar(),
           ),
         ),
+
+        // ───── Main Content ─────────────────
         Expanded(
-            child: Container(
           child: Column(
             children: [
               _buildHeader(),
-              Expanded(child: _buildContent()),
+              Expanded(
+                child: Obx(() {
+                  switch (controller.currentSectionIndex.value) {
+                    case 0:
+                      return const DashboardContentScreen();
+                    case 1:
+                      return const ProductsContentScreen();
+                    case 2:
+                      return const CategoryContentScreen();
+                    default:
+                      return Center(
+                          child: Text(controller
+                              .sections[controller.currentSectionIndex.value]
+                              .title));
+                  }
+                }),
+              ),
             ],
           ),
-        ))
+        ),
       ]),
     );
   }
 
   Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsetsGeometry.all(20),
+      padding: EdgeInsets.only(left: 10, top: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -43,16 +65,112 @@ class Dashboard extends StatelessWidget {
               Icons.menu,
               size: 20,
             ),
-          
           ),
-          SizedBox(width: 10,),
+          const SizedBox(width: 16),
+          const Text("Welcome!",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey)),
+          const SizedBox(width: 16),
+          Spacer(),
+          Row(mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildNotificationBadge(3),
+              _buildAdminUser(),
+              _buildSearchBar(),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildContent() {
-    return Padding(padding: EdgeInsetsGeometry.all(20));
+Widget _buildNotificationBadge(int count) {
+  return Stack(
+    clipBehavior: Clip.none,
+    children: [
+      IconButton(
+        icon: const Icon(Icons.notifications_none, color: Colors.black54),
+        onPressed: () { },
+      ),
+
+      // badge
+      if (count > 0)
+        Positioned(
+          right: 3,
+          top: 2,
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: const BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
+            constraints: const BoxConstraints(
+              minWidth: 16,
+              minHeight: 16,
+            ),
+            child: Text(
+              '$count',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+    ],
+  );
+}
+ Widget _buildAdminUser() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          width: 100,
+          height: 48.0,
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF2F2F2),
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child:  Row(
+            children: [
+             SvgPicture.asset(
+            "assets/icons/user.svg",
+            width: 40,height: 40,
+          ),
+        
+              SizedBox(width: 8),
+              Text('Admin', style: TextStyle(color: Colors.grey)),
+            ],
+          ),
+        ));
+  }
+  Widget _buildSearchBar() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Container(
+              width: 300,
+              height: 48.0,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF2F2F2),
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey),
+                  SizedBox(width: 8),
+                  Text('Search', style: TextStyle(color: Colors.grey)),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 
   Widget _buildSideBar() {
@@ -63,10 +181,9 @@ class Dashboard extends StatelessWidget {
           if (controller.sidebarOpen.value) {
             return Padding(
               padding: EdgeInsets.all(20),
-              child: Text(
-                "Flay\nSlay it in Your Way",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              child: SvgPicture.asset(
+                "assets/icons/flay_white.svg",
+                width: 150,
               ),
             );
           } else {

@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "flay",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

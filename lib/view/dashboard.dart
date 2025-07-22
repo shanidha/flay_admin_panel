@@ -1,10 +1,14 @@
 import 'package:flay_admin_panel/controller/dashboard_controller.dart';
+import 'package:flay_admin_panel/core/resources/app_colors.dart';
+import 'package:flay_admin_panel/core/resources/app_images.dart';
+import 'package:flay_admin_panel/view/add_product_screen.dart';
 import 'package:flay_admin_panel/view/category_screen.dart';
 import 'package:flay_admin_panel/view/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import 'add_category_screen.dart';
 import 'product_screen.dart';
 
 class Dashboard extends StatelessWidget {
@@ -13,7 +17,7 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffF9F7F7),
+      backgroundColor: AppColors.appBackground,
       body: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Obx(
           () => AnimatedContainer(
@@ -38,6 +42,10 @@ class Dashboard extends StatelessWidget {
                       return const ProductsContentScreen();
                     case 2:
                       return const CategoryContentScreen();
+                    case 3:
+                      return const AddCategoryScreen();
+                    case 4:
+                      return const AddProductContentScreen();
                     default:
                       return Center(
                           child: Text(controller
@@ -52,7 +60,7 @@ class Dashboard extends StatelessWidget {
       ]),
     );
   }
-
+//Build Heade for Notification and search bar
   Widget _buildHeader() {
     return Padding(
       padding: EdgeInsets.only(left: 10, top: 20),
@@ -62,7 +70,7 @@ class Dashboard extends StatelessWidget {
           GestureDetector(
             onTap: () => controller.toggleSidebar(),
             child: Icon(
-              Icons.menu,
+              Icons.menu,color: AppColors.secondBackground,
               size: 20,
             ),
           ),
@@ -74,7 +82,8 @@ class Dashboard extends StatelessWidget {
                   color: Colors.grey)),
           const SizedBox(width: 16),
           Spacer(),
-          Row(mainAxisAlignment: MainAxisAlignment.end,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               _buildNotificationBadge(3),
               _buildAdminUser(),
@@ -86,45 +95,46 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-Widget _buildNotificationBadge(int count) {
-  return Stack(
-    clipBehavior: Clip.none,
-    children: [
-      IconButton(
-        icon: const Icon(Icons.notifications_none, color: Colors.black54),
-        onPressed: () { },
-      ),
+  Widget _buildNotificationBadge(int count) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.notifications_none, color: Colors.black54),
+          onPressed: () {},
+        ),
 
-      // badge
-      if (count > 0)
-        Positioned(
-          right: 3,
-          top: 2,
-          child: Container(
-            padding: const EdgeInsets.all(2),
-            decoration: const BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-            constraints: const BoxConstraints(
-              minWidth: 16,
-              minHeight: 16,
-            ),
-            child: Text(
-              '$count',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
+        // badge
+        if (count > 0)
+          Positioned(
+            right: 3,
+            top: 2,
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: const BoxDecoration(
+                color: AppColors.kRedColor,
+                shape: BoxShape.circle,
               ),
-              textAlign: TextAlign.center,
+              constraints: const BoxConstraints(
+                minWidth: 16,
+                minHeight: 16,
+              ),
+              child: Text(
+                '$count',
+                style: const TextStyle(
+                  color: AppColors.background,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-        ),
-    ],
-  );
-}
- Widget _buildAdminUser() {
+      ],
+    );
+  }
+
+  Widget _buildAdminUser() {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
@@ -132,22 +142,23 @@ Widget _buildNotificationBadge(int count) {
           height: 48.0,
           padding: const EdgeInsets.symmetric(horizontal: 0),
           decoration: BoxDecoration(
-            color: const Color(0xFFF2F2F2),
+            color: AppColors.boxBackgroundColor,
             borderRadius: BorderRadius.circular(24),
           ),
-          child:  Row(
+          child: Row(
             children: [
-             SvgPicture.asset(
-            "assets/icons/user.svg",
-            width: 40,height: 40,
-          ),
-        
+              SvgPicture.asset(
+               AppVectors.user,
+                width: 40,
+                height: 40,
+              ),
               SizedBox(width: 8),
               Text('Admin', style: TextStyle(color: Colors.grey)),
             ],
           ),
         ));
   }
+
   Widget _buildSearchBar() {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -158,7 +169,7 @@ Widget _buildNotificationBadge(int count) {
               height: 48.0,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFFF2F2F2),
+                color: AppColors.boxBackgroundColor,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: const Row(
@@ -182,7 +193,7 @@ Widget _buildNotificationBadge(int count) {
             return Padding(
               padding: EdgeInsets.all(20),
               child: SvgPicture.asset(
-                "assets/icons/flay_white.svg",
+                AppVectors.flayWhite,
                 width: 150,
               ),
             );
@@ -219,7 +230,7 @@ Widget _buildNotificationBadge(int count) {
                       ? Container(
                           width: 5,
                           decoration: BoxDecoration(
-                            color: Color(0xFFFF6C30),
+                            color: AppColors.primary,
                           ),
                           padding: EdgeInsets.symmetric(
                               vertical: 12, horizontal: 20),
@@ -230,7 +241,7 @@ Widget _buildNotificationBadge(int count) {
                   ),
                   Icon(
                     icon,
-                    color: isSelected ? Color(0XFFFF6C30) : Color(0XFF6D6562),
+                    color: isSelected ? AppColors.primary : AppColors.kGreyDark,
                   ),
                   if (controller.sidebarOpen.value)
                     SizedBox(
@@ -241,7 +252,7 @@ Widget _buildNotificationBadge(int count) {
                       title,
                       style: TextStyle(
                         color:
-                            isSelected ? Color(0XFFFF6C30) : Color(0XFF6D6562),
+                            isSelected ? AppColors.primary : AppColors.kGreyDark,
                         fontWeight:
                             isSelected ? FontWeight.bold : FontWeight.normal,
                       ),

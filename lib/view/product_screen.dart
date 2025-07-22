@@ -1,5 +1,9 @@
 import 'package:flay_admin_panel/model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../controller/dashboard_controller.dart';
+import '../core/resources/app_colors.dart';
 
 
 class ProductsContentScreen extends StatefulWidget {
@@ -47,8 +51,9 @@ class _ProductsContentScreenState extends State<ProductsContentScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {  Get.find<DashboardController>().changeSection(4);},
                 style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
                   backgroundColor: const Color(0xFFFF6C30),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -72,103 +77,111 @@ class _ProductsContentScreenState extends State<ProductsContentScreen> {
           const SizedBox(height: 16),
 
           //  Products Table 
-          Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)),
-            elevation: 2,
-            child: DataTable(
-              columnSpacing: 16,
-              headingRowHeight: 56,
-              dataRowMinHeight:30 ,
-              columns: const [
-                DataColumn(label: Checkbox(value: false, onChanged: null)),
-                DataColumn(label: Text('Product Name & Size')),
-                DataColumn(label: Text('Price')),
-                DataColumn(label: Text('Stock')),
-                DataColumn(label: Text('Category')),
-                DataColumn(label: Text('Rating')),
-                DataColumn(label: Text('Action')),
-              ],
-              rows: _products.map((p) {
-                return DataRow(cells: [
-                  DataCell(Checkbox(value: false, onChanged: (_) {})),
-                  DataCell(Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(p.image,
-                            width: 48, height: 38, fit: BoxFit.fill),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(p.title,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600)),
-                          const SizedBox(height: 4),
-                          Text(p.sizeInfo,
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: 12)),
-                        ],
-                      ),
-                    ],
-                  )),
-                  DataCell(Text(p.price)),
-                  DataCell(Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('${p.stockLeft} item left',
-                          style:
-                              const TextStyle(fontWeight: FontWeight.w600)),
-                      Text('${p.soldCount} sold',
-                          style: const TextStyle(color: Colors.grey, fontSize: 12)),
-                    ],
-                  )),
-                  DataCell(Text(p.category)),
-                  DataCell(Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 6, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
+           SizedBox(
+                width: double.infinity,
+           
+            child: Card( color: AppColors.background,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              elevation: 2,
+              child: DataTable(
+                columnSpacing: 16,
+                headingRowHeight: 56,
+                dataRowMinHeight:40 ,
+                columns: const [
+                  DataColumn(label: Checkbox(value: false, onChanged: null)),
+                  DataColumn(label: Text('Product Name & Size')),
+                  DataColumn(label: Text('Price')),
+                  DataColumn(label: Text('Stock')),
+                  DataColumn(label: Text('Category')),
+                  DataColumn(label: Text('Rating')),
+                  DataColumn(label: Text('Action')),
+                ],
+                rows: _products.map((p) {
+                  return DataRow(cells: [
+                    DataCell(Checkbox(value: false, onChanged: (_) {},)),
+                    DataCell(Row(
                       children: [
-                        const Icon(Icons.star, size: 14, color: Colors.amber),
-                        const SizedBox(width: 4),
-                        Text('${p.rating}',
-                            style: const TextStyle(fontWeight: FontWeight.w600)),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(p.image,
+                              width: 48, height: 38, fit: BoxFit.fill),
+                        ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(p.title,
+                                style:
+                                    const TextStyle(fontWeight: FontWeight.w600)),
+                            const SizedBox(height: 4),
+                            Text(p.sizeInfo,
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 12)),
+                          ],
+                        ),
+                      ],
+                    )),
+                    DataCell(Text(p.price)),
+                    DataCell(Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${p.stockLeft} item left',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
+                        Text('${p.soldCount} sold',
+                            style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                      ],
+                    )),
+                    DataCell(Text(p.category)),
+                    DataCell(Row(
+                      children: [
+                  Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.star, size: 14, color: Colors.amber),
+                              const SizedBox(width: 4),
+                              Text('${p.rating}',
+                                  style: const TextStyle(fontWeight: FontWeight.w600)),
+                            ],
+                          ),
+                        ),
                         const SizedBox(width: 4),
                         Text('${p.reviewCount} Review',
                             style: const TextStyle(fontSize: 12)),
                       ],
-                    ),
-                  )),
-                  DataCell(Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove_red_eye_outlined),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: const Icon(Icons.delete_outline,
-                            color: Color(0xFFFF6C30)),
-                        onPressed: () {},
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon:
-                            const Icon(Icons.edit, color: Color(0xFFFF6C30)),
-                        onPressed: () {},
-                      ),
-                    ],
-                  )),
-                ]);
-              }).toList(),
+                    )),
+                    DataCell(Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.remove_red_eye_outlined),
+                          onPressed: () {},
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: const Icon(Icons.delete_outline,
+                              color: Color(0xFFFF6C30)),
+                          onPressed: () {},
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon:
+                              const Icon(Icons.edit, color: Color(0xFFFF6C30)),
+                          onPressed: () {},
+                        ),
+                      ],
+                    )),
+                  ]);
+                }).toList(),
+              ),
             ),
           ),
 

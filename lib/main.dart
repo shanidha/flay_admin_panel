@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flay_admin_panel/controller/dashboard_controller.dart';
-import 'package:flay_admin_panel/view/dashboard.dart';
+import 'package:flay_admin_panel/view/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'controller/auth_controller.dart';
+
 Future<void> main() async {
+  //Initialize flutter Widgets
   WidgetsFlutterBinding.ensureInitialized();
+  //Connect Firebase to Admin Panel
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: const FirebaseOptions(
@@ -29,6 +33,8 @@ Future<void> main() async {
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
   }
+  //Initialize Controllers
+  Get.put(AuthController());
   Get.put(DashboardController());
   runApp(const MyApp());
 }
@@ -39,14 +45,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flay Web Admin Panel',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: Dashboard(),
+      theme:  ThemeData(),// AppTheme.appTheme,
+      home: Auth(),
     );
   }
 }

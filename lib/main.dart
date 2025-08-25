@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flay_admin_panel/controller/dashboard_controller.dart';
-import 'package:flay_admin_panel/view/auth.dart';
+import 'package:flay_admin_panel/features/brands/presentation/bloc/brand_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'controller/auth_controller.dart';
+import 'core/di/service_locator.dart';
+import 'core/resources/app_colors.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/pages/login_screen.dart';
+import 'features/categories/domain/usecases/add_category.dart';
+import 'features/categories/presentation/bloc/category_bloc.dart';
+import 'features/shell/presentation/bloc/shell_bloc.dart';
 
 Future<void> main() async {
   //Initialize flutter Widgets
@@ -33,23 +38,35 @@ Future<void> main() async {
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
   }
-  //Initialize Controllers
-  Get.put(AuthController());
-  Get.put(DashboardController());
+  //Initialize dependencies
+
+    await initDependencies();
   runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Flay Web Admin Panel',
-      debugShowCheckedModeBanner: false,
-      theme:  ThemeData(),// AppTheme.appTheme,
-      home: Auth(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AuthBloc(sl(), sl(), sl(), sl())),
+        BlocProvider(create: (_) => ShellBloc()),
+        BlocProvider(create: (_) => AddCategoryBloc(sl<AddCategory>())),
+           BlocProvider(create: (_) => sl<AddBrandBloc>()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flay Admin',
+        theme: ThemeData(
+          primaryColor: AppColors.primary,
+          scaffoldBackgroundColor: AppColors.appBackground,
+          useMaterial3: false,
+        ),
+        home: const LoginScreenPage(),
+      ),
     );
   }
 }

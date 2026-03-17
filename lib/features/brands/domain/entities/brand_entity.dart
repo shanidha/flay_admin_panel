@@ -3,14 +3,15 @@ import 'package:equatable/equatable.dart';
 class Brand extends Equatable {
   final String id;
   final String name;
+  final String description;
   final String? logoUrl;
   final List<String> categoryIds;
   final DateTime createdAt;
 
-  const Brand({
+  const Brand( {
     required this.id,
     required this.name,
-    this.logoUrl,
+    this.logoUrl, required this.description,
     required this.categoryIds,
     required this.createdAt,
   });
@@ -18,6 +19,7 @@ class Brand extends Equatable {
   Brand copyWith({
     String? id,
     String? name,
+     String? description,
     String? logoUrl,
     List<String>? categoryIds,
     bool? featured,
@@ -27,6 +29,7 @@ class Brand extends Equatable {
     return Brand(
       id: id ?? this.id,
       name: name ?? this.name,
+        description: description ?? this.description,
       logoUrl: logoUrl ?? this.logoUrl,
       categoryIds: categoryIds ?? this.categoryIds,
       

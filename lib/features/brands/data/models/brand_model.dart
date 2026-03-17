@@ -6,6 +6,7 @@ class BrandModel extends Brand {
   const BrandModel({
     required super.id,
     required super.name,
+        required super.description,
     super.logoUrl,
     required super.categoryIds,
     required super.createdAt,
@@ -16,6 +17,7 @@ class BrandModel extends Brand {
     return BrandModel(
       id: doc.id,
       name: (m['name'] ?? '') as String,
+        description: (m['description'] ?? '') as String,
       logoUrl: m['logoUrl'] as String?,
       categoryIds: (m['categoryIds'] as List?)?.cast<String>() ?? const [],
       createdAt: (m['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -24,6 +26,7 @@ class BrandModel extends Brand {
 
   Map<String, dynamic> toMap() => {
     'name': name,
+      'description': description,
     'logoUrl': logoUrl,
     'categoryIds': categoryIds,
     'createdAt': Timestamp.fromDate(createdAt),

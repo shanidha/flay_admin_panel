@@ -20,7 +20,7 @@ class AddBrandBloc extends Bloc<AddBrandEvent, AddBrandState> {
     try {
       final brand = Brand(
         id: '', // Firestore can auto-generate; keep empty
-        name: e.name,
+        name: e.name,   description: e.description,
         logoUrl: e.logoUrl,
         categoryIds: e.categoryIds,
         createdAt: DateTime.now(),

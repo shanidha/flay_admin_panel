@@ -11,7 +11,7 @@ class BrandRepositoryImpl implements BrandRepository {
   @override
   Future<void> createBrand(Brand brand) async {
     final model = BrandModel(
-      id: brand.id,
+      id: brand.id,description:brand.description,
       name: brand.name,
       logoUrl: brand.logoUrl,
       categoryIds: brand.categoryIds,
@@ -34,6 +34,7 @@ class BrandRepositoryImpl implements BrandRepository {
   @override
   Future<void> updateBrand(Brand brand) async {
     final model = BrandModel(
+      description:brand.description,
       id: brand.id,
       name: brand.name,
       logoUrl: brand.logoUrl,

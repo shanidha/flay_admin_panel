@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flay_admin_panel/core/constants/env.dart';
 import 'package:flay_admin_panel/features/brands/presentation/bloc/brand_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,8 @@ Future<void> main() async {
   //Connect Firebase to Admin Panel
   if (kIsWeb) {
     await Firebase.initializeApp(
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyAbYVp6_qk7BTseDIAuZ0SGslAihR6aYbA",
+        options: FirebaseOptions(
+      apiKey: Env.apiKey,
       projectId: "flay-8faa5",
       messagingSenderId: "125664788596",
       storageBucket: "flay-8faa5.firebasestorage.app",

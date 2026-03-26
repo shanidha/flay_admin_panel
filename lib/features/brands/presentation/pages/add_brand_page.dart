@@ -70,7 +70,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
     final picked = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['png', 'jpg', 'jpeg', 'webp'],
-      withData: true, // needed on web
+      withData: true, 
     );
     if (picked == null ||
         picked.files.isEmpty ||
@@ -82,7 +82,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
     });
 
     try {
-      // simple unique path; you can also use a brand id if you generate it earlier
+     
       final fileName = 'brand_${DateTime.now().millisecondsSinceEpoch}.png';
       final ref = FirebaseStorage.instance.ref('brand_logos/$fileName');
       await ref.putData(
@@ -164,7 +164,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
           BrandRepositoryImpl(FirebaseFirestore.instance),
         ),
       ),
-      // ↓ Now provide the child
+     
       child: BlocConsumer<AddBrandBloc, AddBrandState>(
         listener: (context, state) {
           if (state.success) {
@@ -346,7 +346,7 @@ class _AddBrandPageState extends State<AddBrandPage> {
   }
 }
 
-/// simple multi-select for categories (checks Firestore 'categories' collection)
+///  multi-select for categories 
 class _CategoryMultiSelect extends StatefulWidget {
   final List<String> value;
   final ValueChanged<List<String>> onChanged;

@@ -45,7 +45,7 @@ class _BrandPageState extends State<BrandPage> {
                           fontSize: 18, fontWeight: FontWeight.w600))),
               ElevatedButton(
                 onPressed: () {
-                  // If you use ShellBloc to swap body:
+                 
                   context
                       .read<ShellBloc>()
                       .add(const ShellSectionChanged(ShellSection.addBrands));
@@ -190,7 +190,7 @@ class _BrandPageState extends State<BrandPage> {
               ),
             ),
             const SizedBox(height: 16),
-            // dummy pagination UI (not wired to Firestore)
+       
             Align(
               alignment: Alignment.centerRight,
               child: Wrap(spacing: 8, children: [
